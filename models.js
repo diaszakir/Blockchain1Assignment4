@@ -3,7 +3,7 @@ import { contractABI } from "./contractABI.js";
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 let userAddress;
-const tokenAddress = "0x7Da4C9Eed544861A6119458796551eABD9c42bd9";
+const tokenAddress = "0xA480ecfE542c3d47aa53169870b0f70EA671c4Ba";
 let tokenContract = new ethers.Contract(tokenAddress, contractABI, provider);
 
 async function connectWallet() {
@@ -165,9 +165,7 @@ async function loadModels() {
     const modelsContainer = document.getElementById("modelsContainer");
     modelsContainer.innerHTML = "";
 
-    const totalModels = await tokenContract.nextModelId;
-
-    for (let i = 1; i < totalModels; i++) {
+    for (let i = 1; i < 5; i++) {
       try {
         const details = await tokenContract.getModelDetails(i);
         const li = document.createElement("li");
