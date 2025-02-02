@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Model Marketplace</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>AI Model Marketplace</h1>
+      <button id="connectWalletBtn">Connect Wallet</button>
+      <p id="walletStatus">Not connected</p>
+      <p id="tokenBalance">Balance: 0 ATE</p>
+    </header>
+
+    <section id="list-model">
+      <form id="listModelForm">
+        <h1>List a New AI Model</h1>
+        <input type="text" id="modelName" placeholder="Model Name" required />
+        <textarea
+          id="modelDescription"
+          placeholder="Model Description"
+          required
+        ></textarea>
+        <input
+          type="number"
+          id="modelPrice"
+          placeholder="Price in Tokens"
+          required
+        />
+        <button type="submit">List Model</button>
+      </form>
+
+      <div id="modelsList">
+        <h1>Available AI Models</h1>
+        <ul id="modelsContainer"></ul>
+      </div>
+    </section>
+
+    <section id="purchase-model">
+      <h2>Purchase AI Model</h2>
+      <input type="number" id="purchase-model-id" placeholder="Model ID" />
+      <button onclick="purchaseModel()">Purchase</button>
+    </section>
+
+    <section id="rate-model">
+      <h2>Rate AI Model</h2>
+      <input type="number" id="rate-model-id" placeholder="Model ID" />
+      <input
+        type="number"
+        id="rating"
+        min="1"
+        max="5"
+        placeholder="Rating (1-5)"
+      />
+      <button onclick="rateModel()">Submit Rating</button>
+    </section>
+
+    <section id="model-details">
+      <h2>View Model Details</h2>
+      <input type="number" id="details-model-id" placeholder="Model ID" />
+      <button onclick="getModelDetails()">View Details</button>
+      <div id="model-info"></div>
+    </section>
+
+    <section id="withdraw-funds">
+      <h2>Withdraw Funds</h2>
+      <button onclick="withdrawFunds()">Withdraw</button>
+    </section>
+
+    <script type="module" src="contractABI.js"></script>
+    <script type="module" src="models.js"></script>
+  </body>
+</html>
