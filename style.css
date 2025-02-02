@@ -1,9 +1,137 @@
-body {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: Arial, sans-serif;
-  text-align: center;
 }
+
+body {
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+header {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+header h1 {
+  color: #333;
+  margin-right: auto;
+}
+
+section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+h1,
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
 button {
-  padding: 10px;
-  margin: 10px;
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+#listModelForm {
+  max-width: 600px;
+  margin-bottom: 30px;
+}
+
+#modelsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  list-style: none;
+}
+
+.model-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.model-card h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.model-card p {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.model-details {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.model-id {
+  color: #999;
+  font-size: 0.9em;
+  margin-top: 10px;
+}
+
+#walletStatus,
+#tokenBalance {
+  background-color: #f8f9fa;
+  padding: 8px 15px;
+  border-radius: 5px;
+  margin: 5px 0;
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  header h1 {
+    margin-right: 0;
+  }
+
+  #modelsContainer {
+    grid-template-columns: 1fr;
+  }
 }
