@@ -98,6 +98,7 @@ textarea {
 .model-card p {
   color: #666;
   margin-bottom: 8px;
+  font-size: small;
 }
 
 .model-details {

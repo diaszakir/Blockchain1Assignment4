@@ -3,7 +3,7 @@ import { contractABI } from "./contractABI.js";
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 let userAddress;
-const tokenAddress = "0xA480ecfE542c3d47aa53169870b0f70EA671c4Ba";
+const tokenAddress = "0xCEE6698aEB179fC77859C2223f988239D47f95F5";
 let tokenContract = new ethers.Contract(tokenAddress, contractABI, provider);
 
 async function connectWallet() {
@@ -68,22 +68,58 @@ async function listModel(event) {
 
 async function purchaseModel() {
   try {
+    const button = document.getElementById("purchase-button");
+    const status = document.getElementById("purchase-status");
+    const input = document.getElementById("purchase-model-id");
+
     if (!signer) {
       alert("Please connect your wallet first!");
       return;
     }
 
-    const modelId = document.getElementById("purchase-model-id").value;
+    const modelId = input.value.trim();
+    if (!modelId) {
+      alert("Please enter a valid Model ID.");
+      return;
+    }
+
+    button.disabled = true;
+    button.innerText = "Processing...";
+    status.style.display = "none";
+
     const contractWithSigner = tokenContract.connect(signer);
 
-    const tx = await contractWithSigner.purchaseModel(modelId);
-    await tx.wait();
+    const modelDetails = await tokenContract.getModelDetails(modelId);
+    const modelPrice = modelDetails[2];
 
-    alert("Model purchased successfully!");
+    const userBalance = await tokenContract.balanceOf(userAddress);
+    if (userBalance.lt(modelPrice)) {
+      alert("Insufficient balance to purchase this model.");
+      button.disabled = false;
+      button.innerText = "Purchase";
+      return;
+    }
+
+    const txApprove = await contractWithSigner.approve(
+      tokenAddress,
+      modelPrice
+    );
+    await txApprove.wait();
+
+    const txPurchase = await contractWithSigner.purchaseModel(modelId);
+    await txPurchase.wait();
+
+    status.innerText = "Model purchased successfully!";
+    status.style.display = "block";
+
     updateTokenBalance();
+    loadModels();
   } catch (error) {
     console.error("Error purchasing model:", error);
     alert("Failed to purchase model: " + error.message);
+  } finally {
+    button.disabled = false;
+    button.innerText = "Purchase";
   }
 }
 
@@ -211,6 +247,9 @@ document
   .getElementById("connectWalletBtn")
   .addEventListener("click", connectWallet);
 document.getElementById("listModelForm").addEventListener("submit", listModel);
+document
+  .getElementById("purchase-button")
+  .addEventListener("click", purchaseModel);
 
 export {
   connectWallet,

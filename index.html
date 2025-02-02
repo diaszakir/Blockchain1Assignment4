@@ -42,8 +42,15 @@
 
     <section id="purchase-model">
       <h2>Purchase AI Model</h2>
-      <input type="number" id="purchase-model-id" placeholder="Model ID" />
-      <button onclick="purchaseModel()">Purchase</button>
+      <input
+        type="number"
+        id="purchase-model-id"
+        placeholder="Model ID"
+        min="1"
+        required
+      />
+      <button id="purchase-button">Purchase</button>
+      <p id="purchase-status" style="color: green; display: none"></p>
     </section>
 
     <section id="rate-model">
