@@ -3,7 +3,7 @@ import { contractABI } from "./contractABI.js";
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 let userAddress;
-const tokenAddress = "0xCEE6698aEB179fC77859C2223f988239D47f95F5";
+const tokenAddress = "0xF48C6026B983E1Ea45756646A446Ce75D175c499";
 let tokenContract = new ethers.Contract(tokenAddress, contractABI, provider);
 
 async function connectWallet() {
@@ -123,32 +123,48 @@ async function purchaseModel() {
   }
 }
 
-async function rateModel() {
+function handleRateModel() {
+  const modelId = parseInt(document.getElementById("rate-model-id").value);
+  const rating = parseInt(document.getElementById("rate-value").value);
+
+  if (!modelId || rating < 1 || rating > 5) {
+    alert("Please enter a valid Model ID and a rating between 1 and 5.");
+    return;
+  }
+
+  rateModel(modelId, rating);
+}
+
+async function rateModel(modelId, rating) {
   try {
-    if (!signer) {
-      alert("Please connect your wallet first!");
-      return;
-    }
-
-    const modelId = document.getElementById("rate-model-id").value;
-    const rating = document.getElementById("rating").value;
-
-    if (rating < 1 || rating > 5) {
-      alert("Rating must be between 1 and 5");
-      return;
-    }
-
+    const signer = await provider.getSigner();
     const contractWithSigner = tokenContract.connect(signer);
-    const tx = await contractWithSigner.rateModel(modelId, rating);
+
+    console.log(`Rating model ${modelId} with ${rating} stars...`);
+
+    let tx = await contractWithSigner.rateModel(modelId, rating);
     await tx.wait();
 
-    alert("Rating submitted successfully!");
-    document.getElementById("rate-model-id").value = "";
-    document.getElementById("rating").value = "";
-    loadModels();
+    alert(`You rated Model ${modelId} with ${rating} stars!`);
+
+    updateModelRating(modelId);
   } catch (error) {
-    console.error("Error rating model:", error);
-    alert("Failed to submit rating: " + error.message);
+    console.error("Rating failed:", error);
+    alert("Rating failed: " + (error.data?.message || error.message));
+  }
+}
+
+// Функция для обновления рейтинга модели в интерфейсе
+async function updateModelRating(modelId) {
+  try {
+    const modelDetails = await tokenContract.getModelDetails(modelId);
+    const averageRating = modelDetails[4]; // Средний рейтинг (делится в контракте)
+
+    document.getElementById(
+      `model-rating-${modelId}`
+    ).innerText = `Rating: ${averageRating}/5`;
+  } catch (error) {
+    console.error("Failed to update rating:", error);
   }
 }
 
@@ -250,6 +266,9 @@ document.getElementById("listModelForm").addEventListener("submit", listModel);
 document
   .getElementById("purchase-button")
   .addEventListener("click", purchaseModel);
+document
+  .getElementById("rate-button")
+  .addEventListener("click", handleRateModel);
 
 export {
   connectWallet,

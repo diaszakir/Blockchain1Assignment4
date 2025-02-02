@@ -110,15 +110,20 @@ contract MyToken is ERC20, Ownable {
         require(balanceOf(msg.sender) >= models[modelId].price, "Insufficient balance");
 
         AIModel storage model = models[modelId];
-        
-        // Transfer tokens from buyer to creator
+
+        // Проверяем, что маркетплейс одобрен на снятие токенов
+        uint256 allowance = allowance(msg.sender, address(this));
+        require(allowance >= model.price, "Approve the marketplace to spend tokens");
+
+        // Переводим токены через transferFrom
         _transfer(msg.sender, model.creator, model.price);
-        
-        // Record the purchase
+
+        // Фиксируем покупку
         purchases[msg.sender][modelId] = true;
-        
+
         emit ModelPurchased(modelId, msg.sender);
     }
+
 
     function rateModel(uint256 modelId, uint8 rating) public {
         require(models[modelId].exists, "Model does not exist");
@@ -133,6 +138,7 @@ contract MyToken is ERC20, Ownable {
 
         emit ModelRated(modelId, msg.sender, rating);
     }
+
 
     function withdrawFunds() public onlyOwner {
         uint256 balance = address(this).balance;
