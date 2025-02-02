@@ -3,7 +3,7 @@ import { contractABI } from "./contractABI.js";
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 let userAddress;
-const tokenAddress = "0x11Bd08fD03cE9169A268BD172d65BD725efDc8EE";
+const tokenAddress = "0x2c3894406eAE382df936726923b95F90baabc4B3";
 let tokenContract = new ethers.Contract(tokenAddress, contractABI, provider);
 
 async function connectWallet() {
@@ -12,6 +12,7 @@ async function connectWallet() {
     return;
   }
   try {
+    checkConnection();
     await window.ethereum.request({ method: "eth_requestAccounts" });
     signer = provider.getSigner();
     userAddress = await signer.getAddress();
@@ -21,6 +22,22 @@ async function connectWallet() {
     loadModels(); // Load models after connecting
   } catch (error) {
     console.error("Connection failed", error);
+  }
+}
+
+async function checkConnection() {
+  const accounts = await ethereum.request({ method: "eth_accounts" });
+  const balanceElement = document.getElementById("wallet-balance");
+
+  if (accounts.length === 0) {
+    document.getElementById("wallet-status").innerText = "Not connected";
+    balanceElement.innerText = "0 ATE";
+  } else {
+    document.getElementById(
+      "wallet-status"
+    ).innerText = `Connected: ${accounts[0]}`;
+    const balance = await tokenContract.balanceOf(accounts[0]);
+    balanceElement.innerText = `${ethers.utils.formatEther(balance)} ATE`;
   }
 }
 
@@ -135,8 +152,25 @@ function handleRateModel() {
   rateModel(modelId, rating);
 }
 
+async function checkIfPurchased(modelId) {
+  try {
+    const signer = await provider.getSigner();
+    const userAddress = await signer.getAddress();
+    return await tokenContract.purchases(userAddress, modelId);
+  } catch (error) {
+    console.error("Error checking purchase:", error);
+    return false;
+  }
+}
+
 async function rateModel(modelId, rating) {
   try {
+    const purchased = await checkIfPurchased(modelId);
+    if (!purchased) {
+      alert("You must purchase this model before rating.");
+      return;
+    }
+
     const signer = await provider.getSigner();
     const contractWithSigner = tokenContract.connect(signer);
 
@@ -158,7 +192,7 @@ async function rateModel(modelId, rating) {
 async function updateModelRating(modelId) {
   try {
     const modelDetails = await tokenContract.getModelDetails(modelId);
-    const averageRating = modelDetails[4]; // Средний рейтинг (делится в контракте)
+    const averageRating = modelDetails[4].toNumber(); // Преобразуем BigNumber в число
 
     document.getElementById(
       `model-rating-${modelId}`
