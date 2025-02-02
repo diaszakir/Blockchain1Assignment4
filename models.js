@@ -3,7 +3,7 @@ import { contractABI } from "./contractABI.js";
 const provider = new ethers.providers.Web3Provider(window.ethereum);
 let signer;
 let userAddress;
-const tokenAddress = "0xF48C6026B983E1Ea45756646A446Ce75D175c499";
+const tokenAddress = "0x11Bd08fD03cE9169A268BD172d65BD725efDc8EE";
 let tokenContract = new ethers.Contract(tokenAddress, contractABI, provider);
 
 async function connectWallet() {
@@ -193,6 +193,31 @@ async function getModelDetails() {
   }
 }
 
+async function getModelDetailsUI() {
+  const modelId = document.getElementById("model-id-input").value;
+
+  if (!modelId) {
+    alert("Please enter a valid Model ID.");
+    return;
+  }
+
+  try {
+    const modelDetails = await tokenContract.getModelDetails(modelId);
+
+    document.getElementById("model-name").innerText = modelDetails[0];
+    document.getElementById("model-description").innerText = modelDetails[1];
+    document.getElementById("model-price").innerText = modelDetails[2];
+    document.getElementById("model-creator").innerText = modelDetails[3];
+    document.getElementById("model-average-rating").innerText = modelDetails[4];
+    document.getElementById("model-ratings-count").innerText = modelDetails[5];
+
+    document.getElementById("model-info").style.display = "block";
+  } catch (error) {
+    console.error("Failed to fetch model details:", error);
+    alert("Error fetching model details.");
+  }
+}
+
 async function withdrawFunds() {
   try {
     if (!signer) {
@@ -269,6 +294,9 @@ document
 document
   .getElementById("rate-button")
   .addEventListener("click", handleRateModel);
+document
+  .getElementById("model_button")
+  .addEventListener("click", getModelDetailsUI);
 
 export {
   connectWallet,

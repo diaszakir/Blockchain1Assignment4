@@ -67,10 +67,26 @@
     </section>
 
     <section id="model-details">
-      <h2>View Model Details</h2>
-      <input type="number" id="details-model-id" placeholder="Model ID" />
-      <button onclick="getModelDetails()">View Details</button>
-      <div id="model-info"></div>
+      <h2>AI Model Details</h2>
+      <input type="number" id="model-id-input" placeholder="Enter Model ID" />
+      <button id="model_button">Get Details</button>
+
+      <div id="model-info" style="display: none">
+        <p><strong>Name:</strong> <span id="model-name"></span></p>
+        <p>
+          <strong>Description:</strong> <span id="model-description"></span>
+        </p>
+        <p><strong>Price:</strong> <span id="model-price"></span> tokens</p>
+        <p><strong>Creator:</strong> <span id="model-creator"></span></p>
+        <p>
+          <strong>Average Rating:</strong>
+          <span id="model-average-rating"></span>/5
+        </p>
+        <p>
+          <strong>Number of Ratings:</strong>
+          <span id="model-ratings-count"></span>
+        </p>
+      </div>
     </section>
 
     <section id="withdraw-funds">
