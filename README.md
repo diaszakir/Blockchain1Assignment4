@@ -30,21 +30,19 @@ This project is an AI Model Marketplace that enables users to buy and sell AI mo
 2. **Install Dependencies**:
 
    ```bash
-   npm install
+   npm install hardhat
    ```
 
-3. **Compile Smart Contracts**:
+3. **Deploy Smart Contracts**:
 
    ```bash
-   truffle compile
+   npx hardhat run scripts/deploy.js --network ganache
    ```
 
-4. **Deploy Smart Contracts**:
-
-   Start Ganache to set up a local blockchain, then:
+4. **Compile Smart Contracts**:
 
    ```bash
-   truffle migrate
+   npx hardhat compile
    ```
 
 5. **Start the Application**:
