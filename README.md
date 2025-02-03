@@ -86,3 +86,10 @@ This project is an AI Model Marketplace that enables users to buy and sell AI mo
 - [Connecting to MetaMask with Vanilla JS](https://docs.web3js.org/guides/dapps/metamask-vanilla/)
 - [OpenZeppelin Contracts Wizard](https://wizard.openzeppelin.com/)
 
+### **Authors & Contributors**
+- **Danel Kanbakova / SE-2320**
+- **Dias Zakir / SE-2320**
+- **Anvar Tamabayev / SE-2320**
+- **Astana IT University**
+
+
