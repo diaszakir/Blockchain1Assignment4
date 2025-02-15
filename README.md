@@ -15,7 +15,7 @@ This project is an AI Model Marketplace that enables users to buy and sell AI mo
 
 - [Node.js](https://nodejs.org/) (v14 or later)
 - [MetaMask](https://metamask.io/) browser extension
-- [Truffle](https://www.trufflesuite.com/truffle) (for smart contract development)
+- [Hardhat] (for smart contract development)
 - [Ganache](https://www.trufflesuite.com/ganache) (for local blockchain testing)
 
 ### Installation
@@ -23,8 +23,8 @@ This project is an AI Model Marketplace that enables users to buy and sell AI mo
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/diaszakir/assignment4blockprog.git
-   cd assignment4blockprog
+   git clone https://github.com/diaszakir/Blockchain1Assignment4.git
+   cd Blockchain1Assignment4
    ```
 
 2. **Install Dependencies**:
