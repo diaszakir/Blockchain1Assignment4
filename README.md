@@ -74,7 +74,7 @@ This project is an AI Model Marketplace that enables users to buy and sell AI mo
 ## Technologies Used
 
 - **Solidity**: For smart contract development.
-- **Truffle**: Development framework for Ethereum.
+- **Hardhat**: Development framework for Ethereum.
 - **React**: Frontend library for building the user interface.
 - **Web3.js**: JavaScript library for interacting with the Ethereum blockchain.
 - **MetaMask**: Browser extension for managing Ethereum wallets.
